@@ -96,7 +96,7 @@ class PlaybackManager:
         except RuntimeError:
             self.log('exit early because player is no longer running', 2)
             return False, False
-        if self.api.has_addon_data().get('notification_offset'):
+        if self.api.offset_used:
             next_up_progress_step_size = calculate_progress_steps(get_setting_int('autoTime'))
         else:
             next_up_progress_step_size = calculate_progress_steps(total_time - play_time)

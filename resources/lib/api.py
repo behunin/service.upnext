@@ -15,6 +15,7 @@ class Api:
         self.__dict__ = self._shared_state
         self.data = {}
         self.encoding = 'base64'
+        self.offset_used = False
 
     def log(self, msg, level=2):
         """Log wrapper"""
@@ -82,10 +83,12 @@ class Api:
     def notification_time(self, total_time=None):
         # Alway use metadata, when available
         if self.data.get('notification_time'):
+            self.offset_used = True
             return int(self.data.get('notification_time'))
 
         # Some consumers send the offset when the credits start (e.g. Netflix)
         if total_time and self.data.get('notification_offset'):
+            self.offset_used = True
             return total_time - int(self.data.get('notification_offset'))
 
         # Use a customized notification time, when configured
